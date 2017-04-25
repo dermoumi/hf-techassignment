@@ -1,0 +1,8 @@
+# Python cache directories
+**/__pycache__/
+
+# Automatically saved files
+*~
+
+# virtualenv directory
+env
