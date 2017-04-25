@@ -1,0 +1,6 @@
+{% extends "mainapp/partials/base.html" %}
+
+{% block content %}
+  You are logged in as {{ request.user }}<br/>
+  <a href="{% url 'mainapp:accounts_logout' %}">Logout »</a>
+{% endblock content %}

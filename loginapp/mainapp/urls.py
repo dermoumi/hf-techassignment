@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^login', views.login, name='login'),
     url(r'^email-notice', views.email_notice, name='email_notice'),
     url(r'^confirm-email', views.confirm_email, name='confirm_email'),
-    url(r'^panel/manage', views.panel_manage, name='panel_manage'),
-    url(r'^panel/logout', views.panel_logout, name='panel_logout'),
+    url(r'^accounts/profile', views.accounts_profile, name='accounts_profile'),
+    url(r'^accounts/logout', views.accounts_logout, name='accounts_logout'),
 ]

@@ -25,6 +25,7 @@ class MyUserManager(BaseUserManager):
 
         # Create superuser, set password and flag as admin
         user = self.create_user(email, password, commit=False)
+        user.is_active = True
         user.is_admin = True
 
         if commit:
@@ -35,7 +36,7 @@ class MyUserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.CharField(_('email'), max_length=100, unique=True)
     is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     confirmation_token = models.CharField(max_length=32, null=True)
     objects = MyUserManager()
     USERNAME_FIELD = 'email'
