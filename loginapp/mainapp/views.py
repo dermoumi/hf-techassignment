@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import views as auth_views
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 from django.urls import reverse
 
 # Index view, right now all it does is redirect to user panel
@@ -20,6 +22,7 @@ def confirm_email(request):
     # TODO: Implement email confirmation
     pass
 
+# Shows the user's profile
 def accounts_profile(request):
     if request.user.is_anonymous:
         from django.contrib.auth.views import redirect_to_login
@@ -32,6 +35,10 @@ def accounts_profile(request):
 
     return render(request, 'mainapp/accounts_profile.html')
 
+# Logs the user out
 def accounts_logout(request):
-    # TODO: Implement panel logout
-    pass
+    if not request.user.is_anonymous:
+        auth_views.logout(request)
+        messages.info(request, _('Successfully disconnected'))
+
+    return redirect('mainapp:index')

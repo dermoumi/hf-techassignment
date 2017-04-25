@@ -5,6 +5,19 @@
     {# TODO: Bootstrap #}
 </head>
 <body>
+
+{# Show messages if any #}
+{% block messages %}
+  {% if messages %}
+    <div class="container messages">
+      {% for msg in messages %}
+        <div class="alert alert-{{ msg.level_tag }}" role="alert">{{ msg.message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock messages %}
+
+{# Show page content #}
 {% block content %}
   
 {% endblock content %}
