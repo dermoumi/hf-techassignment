@@ -1,11 +1,40 @@
 {% extends "mainapp/partials/base.html" %}
 
+{% block body_class %}{{ block.super }} small-container{% endblock body_class %}
 {% block content %}
-  <form method="post">
-    {% csrf_token %}
-    {# TODO: detailed, bootsrapped form #}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-  </form>
-  <a href="{% url 'mainapp:register' %}">Register</a>
+  <div class="container">
+    <h2>Log in</h2>
+    <p>
+      Don't have an account? <a href="{% url 'mainapp:signup' %}">Sign Up »</a>
+    </p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="row form-group">
+        <div class="col-sm-12 field-{{ form.username.name }} {{ form.username.errors|yesno:'error,' }}">
+          <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+          <div class="widget">{{ form.username }}</div>
+          {% if form.username.errors %}
+            <div class="cal-sm12">
+              {{ form.username.errors }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12 field-{{ form.password.name }} {{ form.password.errors|yesno:'error,' }}">
+          <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+          <div class="widget">{{ form.password }}</div>
+          {% if form.password.errors %}
+            <div class="cal-sm12">
+              {{ form.password.errors }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <p class="text-right">
+        <button type="submit" class="btn btn-lg btn-primary">Login »</button>
+      </p>
+    </form>
+  </div>
 {% endblock content %}

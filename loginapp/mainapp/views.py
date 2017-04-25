@@ -24,7 +24,7 @@ def signup(request):
     if request.method == 'POST':
         form = forms.SignupForm(request.POST)
         if form.is_valid():
-            form.save()
+            # form.save()
 
             messages.success(request, _('You have been successfully registered'))
             return redirect('mainapp:login')

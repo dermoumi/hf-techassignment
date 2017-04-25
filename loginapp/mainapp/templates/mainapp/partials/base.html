@@ -15,7 +15,7 @@
   {# Main style #}
   <link rel="stylesheet" type="text/css" href="{% static 'mainapp/css/style.css' %}">
 </head>
-<body class="{{ request.resolver_match.url_name }}">
+<body class="{% block body_class %}{% endblock %}">
 <div class="content">
   {# Show messages if any #}
   {% block messages %}

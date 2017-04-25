@@ -9,10 +9,10 @@ body {
     font-family: OpenSans, Helvetica, sans-serif;
     color: #535362;
     line-height: 2;
+    margin: 1rem;
 }
 
-/* Styles removed from bootstrap */
-
+/* Styles originally removed from bootstrap and added as standalone in here */
 .btn {
     display: inline-block;
     margin-bottom: 0;
@@ -125,4 +125,8 @@ body {
     padding: 0 .4em 0 2em;
     margin: 0;
     color: #C73800;
+}
+
+.small-container .container {
+    max-width: 640px !important;
 }
