@@ -112,7 +112,10 @@ AUTH_USER_MODEL = 'mainapp.user'
 # Channel
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            'hosts': ['redis://redis:6379']
+        },
         "ROUTING": "mainapp.routing.channel_routing",
     },
 }
