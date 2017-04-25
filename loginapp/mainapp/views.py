@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import views as auth_views
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 from . import forms
 
 # Index view, right now all it does is redirect to user panel
