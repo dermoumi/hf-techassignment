@@ -1,0 +1,10 @@
+{% extends "mainapp/partials/base.html" %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {# TODO: detailed, bootsrapped form #}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+{% endblock content %}

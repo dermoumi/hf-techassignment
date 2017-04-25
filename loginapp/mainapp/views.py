@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import views as auth_views
 
 # Index view, right now all it does is redirect to user panel
 def index(request):
     return redirect('mainapp:panel_manage')
 
+# Login view, logs the user in, contrib.auth handles it
 def login(request):
-    # TODO: Implement login page
-    pass
+    # TODO: Check if the user isn't already logged in
+
+    return auth_views.login(request, template_name='mainapp/login.html')
 
 def email_notice(request):
     # TODO: Implement email notice
