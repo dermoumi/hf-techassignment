@@ -1,25 +1,37 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Tech assignment{% endblock title %}</title>
-    {# TODO: Bootstrap #}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}Tech assignment{% endblock title %}</title>
+
+  {# Bootstrap #}
+  <link rel="stylesheet" type="text/css" href="{% static 'mainapp/css/bootstrap.min.css' %}">
+
+  {# Main style #}
+  <link rel="stylesheet" type="text/css" href="{% static 'mainapp/css/style.css' %}">
 </head>
-<body>
+<body class="{{ request.resolver_match.url_name }}">
+<div class="content">
+  {# Show messages if any #}
+  {% block messages %}
+    {% if messages %}
+      <div class="container messages">
+        {% for msg in messages %}
+          <div class="alert alert-{{ msg.level_tag }}" role="alert">{{ msg.message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endblock messages %}
 
-{# Show messages if any #}
-{% block messages %}
-  {% if messages %}
-    <div class="container messages">
-      {% for msg in messages %}
-        <div class="alert alert-{{ msg.level_tag }}" role="alert">{{ msg.message }}</div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endblock messages %}
-
-{# Show page content #}
-{% block content %}
-  
-{% endblock content %}
+  {# Show page content #}
+  {% block content %}
+    
+  {% endblock content %}
+</div>
 </body>
 </html>

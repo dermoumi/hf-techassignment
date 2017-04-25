@@ -7,7 +7,7 @@ from . import forms
 
 # Index view, right now all it does is redirect to user panel
 def index(request):
-    return redirect('mainapp:accounts_profile')
+    return redirect('mainapp:signup')
 
 # Login view, logs the user in, contrib.auth handles it
 def login(request):
@@ -16,36 +16,27 @@ def login(request):
     return auth_views.login(request, template_name='mainapp/login.html')
 
 # Registers the user into the website
-def register(request):
-    # TODO: Check if the user isn't already logged in
+def signup(request):
+    # Check if the user is already logged in
+    response = filter_login(request)
+    if response: return response
 
     if request.method == 'POST':
-        form = forms.UserAddForm(request.POST)
+        form = forms.SignupForm(request.POST)
         if form.is_valid():
             form.save()
 
-            # TODO: Add email confirmation
             messages.success(request, _('You have been successfully registered'))
             return redirect('mainapp:login')
     else:
-        form = forms.UserAddForm()
+        form = forms.SignupForm()
 
-    return render(request, 'mainapp/register.html', {
+    return render(request, 'mainapp/signup.html', {
         'form': form
     })
 
-# Shows a notice asking the user to check they mailbox for a confirmation email
-def email_notice(request):
-    # TODO: Implement email notice
-    pass
-
-# Activates a user using a mailed url
-def confirm_email(request):
-    # TODO: Implement email confirmation
-    pass
-
 # Shows the user's profile
-def accounts_profile(request):
+def profile(request):
     if request.user.is_anonymous:
         from django.contrib.auth.views import redirect_to_login
         return redirect_to_login(
@@ -55,12 +46,19 @@ def accounts_profile(request):
     elif request.user.is_staff:
         return redirect('admin:index')
 
-    return render(request, 'mainapp/accounts_profile.html')
+    return render(request, 'mainapp/profile.html')
 
 # Logs the user out
-def accounts_logout(request):
+def logout(request):
     if not request.user.is_anonymous:
         auth_views.logout(request)
-        messages.info(request, _('Successfully disconnected'))
+        messages.info(request, _('Successfully logged out'))
 
     return redirect('mainapp:index')
+
+def filter_login(request):
+    user = request.user
+    if user.is_staff:
+        return redirect('admin:index')
+    elif not user.is_anonymous:
+        return redirect('mainapp:profile')

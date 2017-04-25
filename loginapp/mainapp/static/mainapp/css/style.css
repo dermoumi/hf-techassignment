@@ -1,0 +1,128 @@
+@font-face {
+    font-family: OpenSans;
+    src: url('../fnt/OpenSans-Regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: OpenSans, Helvetica, sans-serif;
+    color: #535362;
+    line-height: 2;
+}
+
+/* Styles removed from bootstrap */
+
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+.btn-lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.content .container {
+    max-width: 960px;
+}
+
+.alert {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+}
+
+.content .messages .alert:last-child {
+    margin-bottom: 0;
+}
+
+.content form .widget input, .content form .widget select, .content form .widget textarea {
+    width: 100%;
+    padding: 0 1em;
+    line-height: 2.4;
+    box-sizing: border-box;
+    border-radius: 2px;
+    border: 1px solid #DDD;
+}
+
+.content form .widget textarea {
+    resize: vertical;
+    line-height: 1.5;
+    padding: .5em 1em;
+}
+
+.content form .widget input:active, .content form .widget select:active {
+    border-color: #AAA;
+}
+
+.content form .widget select, .content form .widget input {
+    height: 2.5em;
+}
+
+.content form .widget .checkbox {
+    margin: 0;
+    padding: 0 1em 0 2.4em;
+    line-height: 2.4em;
+    height: 2.4em;
+    display: inline-block;
+}
+
+.content form .widget .checkbox input {
+    height: 1.8em;
+    width: auto;
+    padding: 0;
+    border: auto;
+}
+
+.content form select[disabled], .content input[disabled], .content form select[readonly], .content input[readonly] {
+    background-color: #EEE;
+    opacity: .6;
+}
+
+.content form .city-other-input, .content form .widget.additional {
+    margin-top: 10px;
+}
+
+.content form .error label {
+    color: #C73800;
+}
+
+.content form .error .widget input, .content form .error .widget select, .content form .error .widget textarea {
+    border-color: #C73800;
+}
+
+.content form .errorlist {
+    list-style: circle;
+    padding: 0 .4em 0 2em;
+    margin: 0;
+    color: #C73800;
+}

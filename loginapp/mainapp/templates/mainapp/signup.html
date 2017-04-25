@@ -1,0 +1,64 @@
+{% extends "mainapp/partials/base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h2>Signup</h2>
+    <p>
+      Already a member? <a href="{% url 'mainapp:login' %}">Log in »</a>
+    </p>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row form-group">
+        <div class="col-sm-6 {{ form.username.errors|yesno:'error,' }}">
+          <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+          <div class="widget">
+            {{ form.username }}
+          </div>
+          {% if form.username.errors %}
+            <div class="col-sm-12">
+              {{ form.username.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-sm-6 {{ form.email.errors|yesno:'error,' }}">
+          <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+          <div class="widget">
+            {{ form.email }}
+          </div>
+          {% if form.email.errors %}
+            <div class="col-sm-12">
+              {{ form.email.errors }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-6 {{ form.password.errors|yesno:'error,' }}">
+          <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+          <div class="widget">
+            {{ form.password }}
+          </div>
+          {% if form.password.errors %}
+            <div class="col-sm-12">
+              {{ form.password.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-sm-6 {{ form.password_confirmation.errors|yesno:'error,' }}">
+          <label for="{{ form.password_confirmation.id_for_label }}">{{ form.password_confirmation.label }}</label>
+          <div class="widget">
+            {{ form.password_confirmation }}
+          </div>
+          {% if form.password_confirmation.errors %}
+            <div class="col-sm-12">
+              {{ form.password_confirmation.errors }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="text-right">
+        <button type="submit" class="btn btn-lg btn-primary">Signup »</button>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

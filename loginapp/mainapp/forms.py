@@ -3,14 +3,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import models
 
-class UserAddForm(forms.ModelForm):
-    email = forms.EmailField(label=_('Email')) # TODO: Might no longer need this with custom templates
+class SignupForm(forms.ModelForm):
+    email = forms.EmailField(label=_('Email'))
     password = forms.CharField(label=_('Password'), widget=forms.PasswordInput)
     password_confirmation = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput)
 
     class Meta:
         model = models.User
-        fields = ('email',)
+        fields = ('username', 'email',)
 
     def clean_password_confirmation(self):
         password = self.cleaned_data.get('password')
