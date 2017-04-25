@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,3 +108,14 @@ STATIC_URL = '/static/'
 
 # Auth
 AUTH_USER_MODEL = 'mainapp.user'
+
+# Channel
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': ['redis://redis:6379']
+        },
+        'ROUTING': 'mainapp.routing.channel_routing',
+    },
+}
