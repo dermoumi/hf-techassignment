@@ -1,5 +1,6 @@
 from channels.routing import route
+from . import consumers
 
 channel_routing = [
-    route('http.request', 'mainapp.consumers.http_consumer')
+    route('websocket.receive', consumers.ws_message)
 ]
