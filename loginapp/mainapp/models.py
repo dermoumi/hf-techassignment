@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+from django.utils import timezone
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None, commit=True):
@@ -60,3 +61,16 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+class Job(models.Model):
+    name = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    completed = models.DateTimeField(null=True)
+    celery_id = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        ordering = ('created',)
+
+    def __str__(self):
+        return self.name
