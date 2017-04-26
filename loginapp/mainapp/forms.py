@@ -24,7 +24,7 @@ class SignupForm(forms.ModelForm):
 
     def save(self, commit=True):
         # Save hashed, salted password
-        user = super(UserAddForm, self).save(commit=False)
+        user = super(SignupForm, self).save(commit=False)
         user.set_password(self.cleaned_data.get('password'))
         
         # TODO: Add email confirmation
