@@ -37,9 +37,16 @@
   {% endblock messages %}
 
   {# Show page content #}
-  {% block content %}
+  {% block dash_container %}
+    {% block content %}
+      
+    {% endblock content %}
+  {% endblock dash_container %}
+
+  {# Extra scripts #}
+  {% block extra_scripts %}
     
-  {% endblock content %}
+  {% endblock extra_scripts %}
 </div>
 </body>
 </html>

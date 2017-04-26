@@ -5,7 +5,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-6">
-          <h1><a href="{% url 'adminapp:dashboard' %}">Administration</h1>
+          <h1><a href="{% url 'adminapp:dashboard' %}">Administration</a></h1>
         </div>
         <div class="col-sm-6 admin-links">
           Logged in as {{ request.user }} | <a href="{% url 'adminapp:logout' %}">Logout »</a>
@@ -14,3 +14,23 @@
     </div>
   </header>
 {% endblock header %}
+
+{% block dash_container %}
+  <div class="container dash-container">
+    <div class="row">
+      <div class="col-sm-3 col-sm-push-9">
+        {% block sidebar %}
+          <ul>
+            <li><a href="{% url 'adminapp:mailjobs_all' %}">Mail jobs (All)</a></li>
+            <li><a href="{% url 'adminapp:mailjobs_active' %}">Mail jobs (Active)</a></li>
+          </ul>
+        {% endblock sidebar %}
+      </div>
+      <div class="col-sm-9 col-sm-pull-3">
+        {% block content %}
+          
+        {% endblock content %}
+      </div>
+    </div>
+  </div>
+{% endblock dash_container %}

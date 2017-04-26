@@ -27,3 +27,7 @@ header .admin-links {
     line-height: 2em;
     font-size: 1.1em;
 }
+
+.dash-container {
+    margin-top: 1rem;
+}

@@ -2,15 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib import auth, messages
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponse
+from mainapp.models import EmailJob
+from django.core import serializers
 from . import forms
 
-def dashboard(request):
-    if not request.user.is_authenticated():
-        return auth.views.redirect_to_login(
-            request.get_full_path(),
-            reverse('adminapp:login', current_app='adminapp')
-        )
+def staff_only(user):
+    return user.is_authenticated() and user.is_staff
 
+@user_passes_test(staff_only, login_url='adminapp:login')
+def dashboard(request):
     return render(request, 'adminapp/dashboard.html', {})
 
 def login(request):
@@ -42,3 +44,16 @@ def logout(request):
         messages.info(request, _('Successfully logged out'))
 
     return redirect('adminapp:login') # Or to the main site?
+
+@user_passes_test(staff_only, login_url='adminapp:login')
+def mailjobs_all(request):
+    return render(request, 'adminapp/mailjobs_all.html')
+
+@user_passes_test(staff_only, login_url='adminapp:login')
+def mailjobs_active(request):
+    return render(request, 'adminapp/mailjobs_active.html')
+
+# @user_passes_test(staff_only, login_url='adminapp:login')
+def mailjobs_rest_get(request):
+    mailjobs = EmailJob.objects.all()
+    return HttpResponse(serializers.serialize('json', mailjobs))
