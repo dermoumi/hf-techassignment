@@ -30,7 +30,7 @@ class SignupForm(forms.ModelForm):
         
         # Start email task
         from . import tasks
-        tasks.send_email(form.cleaned_data.get('email'))
+        tasks.send_email(self.cleaned_data.get('email'))
 
         if commit:
             user.save()

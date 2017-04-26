@@ -63,8 +63,6 @@ def mailjobs_rest_get(request):
         order_dir = '' if request.POST.get('sort_dir', 'asc') == 'asc' else '-'
 
         mail_jobs = EmailJob.objects.order_by(order_dir + order_by)
-        print('CREATED AT', mail_jobs[0].created_at)
-        print('SORTDIR', order_dir, order_dir+order_by, request.POST.get('sort_dir'))
         paginator = Paginator(mail_jobs, page_size)
 
         page_jobs = serializers.serialize('json', paginator.page(page).object_list)

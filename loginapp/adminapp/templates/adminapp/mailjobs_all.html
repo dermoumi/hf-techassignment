@@ -29,8 +29,6 @@
       return cookieValue;
     }
 
-    var columns = ['destination', 'sent', 'retry_count', 'created_at'];
-
     var dataStore = {
       data: function() {
         return {
@@ -127,8 +125,9 @@
         },
 
         getRows: function(params, callback) {
-            params = params || {};
+            var columns = ['destination', 'status', 'retry_count', 'created_at'];
 
+            params = params || {};
             params.sort_by = columns[params.sort_by || this.sort_by] || 'created_at';
             params.sort_dir = params.sort_dir || this.sort_dir || 'dsc';
             params.page = params.page || this.page;
@@ -170,7 +169,7 @@
       data: {
         columns: [
           {label: 'Destination', field: 'fields.destination'},
-          {label: 'Status', callback: function(row) { return row.fields.sent ? 'YES' : 'NO'; }},
+          {label: 'Status', field: 'fields.status'},
           {label: 'Retries', field: 'fields.retry_count'},
           {label: 'Created', field: 'fields.created_at'},
         ],
