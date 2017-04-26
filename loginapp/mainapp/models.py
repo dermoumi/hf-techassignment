@@ -34,8 +34,8 @@ class MyUserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser):
-    username = models.CharField(_('username'), max_length=100, unique=True, default='')
-    email = models.CharField(_('email'), max_length=100, unique=True)
+    username = models.CharField(max_length=100, unique=True, default='')
+    email = models.CharField(max_length=100, unique=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     objects = MyUserManager()
@@ -59,3 +59,14 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+class EmailJob(models.Model):
+    destination = models.CharField(max_length=100)
+    sent = models.BooleanField(default=False)
+    retry_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_retry_at = models.DateTimeField(null=True)
+    celery_id = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.destination

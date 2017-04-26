@@ -24,8 +24,14 @@ def signup(request):
     if request.method == 'POST':
         form = forms.SignupForm(request.POST)
         if form.is_valid():
-            # form.save()
+            # Save user to the database
+            form.save()
 
+            # Start email task
+            from . import tasks
+            tasks.send_email(form.cleaned_data.get('email'))
+
+            # Redirect to login page
             messages.success(request, _('You have been successfully registered'))
             return redirect('mainapp:login')
     else:
