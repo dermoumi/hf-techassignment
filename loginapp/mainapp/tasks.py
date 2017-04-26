@@ -38,7 +38,7 @@ def send_email_task(self, job_id):
             fail_silently=False
         )
     except MaxRetriesExceededError as message:
-        # Failed to send
+        # Failed to send (max retries exceeded)
         log.error('Email task failed: %s', message)
         mail_job.status = 'failed'
         # TODO: Notify task changed state (failed)
