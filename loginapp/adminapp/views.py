@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from mainapp.models import EmailJob
 from django.core import serializers
+from django.core.paginator import Paginator
 from . import forms
 
 def staff_only(user):
@@ -53,7 +54,23 @@ def mailjobs_all(request):
 def mailjobs_active(request):
     return render(request, 'adminapp/mailjobs_active.html')
 
-# @user_passes_test(staff_only, login_url='adminapp:login')
+@user_passes_test(staff_only, login_url='adminapp:login')
 def mailjobs_rest_get(request):
-    mailjobs = EmailJob.objects.all()
-    return HttpResponse(serializers.serialize('json', mailjobs))
+    if request.method == 'POST':
+        page_size = int(request.POST.get('page_size', 10))
+        page = request.POST.get('page', 1)
+        order_by = request.POST.get('sort_by', 'created_at')
+        order_dir = '' if request.POST.get('sort_dir', 'asc') == 'asc' else '-'
+
+        mail_jobs = EmailJob.objects.order_by(order_dir + order_by)
+        print('CREATED AT', mail_jobs[0].created_at)
+        print('SORTDIR', order_dir, order_dir+order_by, request.POST.get('sort_dir'))
+        paginator = Paginator(mail_jobs, page_size)
+
+        page_jobs = serializers.serialize('json', paginator.page(page).object_list)
+        json_output = '{"total_count": %i, "entries": %s}' % (mail_jobs.count(), page_jobs)
+
+    else:
+        json_output = ''
+
+    return HttpResponse(json_output, content_type="application/json")

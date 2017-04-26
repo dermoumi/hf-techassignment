@@ -31,3 +31,7 @@ header .admin-links {
 .dash-container {
     margin-top: 1rem;
 }
+
+.jobs-list table {
+    width: 100%;
+}

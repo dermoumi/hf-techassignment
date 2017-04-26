@@ -4,7 +4,7 @@
 {% block content %}
   <div id="mail-jobs">
     <h2>Mail jobs</h2>
-    <datatable :columns="columns" :data-store="dataStore" paginate></datatable>
+    <datatable class="jobs-list" :columns="columns" :data-store="dataStore" sortable paginate></datatable>
   </div>
 {% endblock content %}
 
@@ -29,37 +29,83 @@
       return cookieValue;
     }
 
+    var columns = ['destination', 'sent', 'retry_count', 'created_at'];
+
     var dataStore = {
       data: function() {
         return {
-          data: []
+          entries: [],
+          paginate: true,
+          filterable: true,
+          sortable: true,
+          can_resize: true,
+          filter: '',
+          sort_by: '',
+          sort_dir: 'dsc',
+          page: 1,
+          page_size: 10,
+          page_size_old: 10,
+          table: null,
+          total_count: 0
         }
       },
       computed: {
+        filtered_rows: function() {
+          return this.entries;
+        },
+
+        sorted_rows: function() {
+          return this.entries;
+        },
+
         last_page: function() {
-          return 1;
+          return Math.ceil(this.total_count / this.page_size);
         },
 
         visible_rows: function() {
-          return this.data
+          if (this.page_size !== this.page_size_old) {
+            this.getRows(undefined, function() {
+              this.page_size_old = this.page_size;
+            }.bind(this));
+          }
+
+          return this.entries;
         }
       },
 
       methods: {
-        sortBy: function(columnID) {
-          return;
+        sortBy: function(column_id) {
+          var sort_dir = this.sort_dir;
+          if(this.sort_by === column_id) {
+            switch(sort_dir){
+              case null:
+                sort_dir = 'asc';
+                break;
+              case 'asc':
+                sort_dir = 'dsc';
+                break;
+              case 'dsc':
+                sort_dir = null;
+                break;
+            }
+          }
+
+          this.getRows({sort_by: column_id, sort_dir: sort_dir}, function() {
+            this.sort_by = column_id;
+            this.sort_dir = sort_dir;
+          }.bind(this));
         },
 
         setPage: function(pageNumber, event) {
-          this.getRows(function() {
-            this.page = pageNumber
+          this.getRows({page: pageNumber}, function() {
+            this.page = pageNumber;
           }.bind(this));
 
           event.target.blur();
         },
 
         setTable: function(table) {
-          this.table;
+          this.table = table;
         },
 
         setFilterable: function(value) {
@@ -75,25 +121,46 @@
         },
 
         setData: function(data) {
-          this.getRows(function() {
-            console.log('hello');
-          }.bind(this))
+          this.getRows({}, function() {
+            // Nothing to do?
+          }.bind(this));
         },
 
-        getRows: function(callback) {
+        getRows: function(params, callback) {
+            params = params || {};
+
+            params.sort_by = columns[params.sort_by || this.sort_by] || 'created_at';
+            params.sort_dir = params.sort_dir || this.sort_dir || 'dsc';
+            params.page = params.page || this.page;
+            params.page_size = params.page_size || this.page_size;
+
             var r = new XMLHttpRequest();
             r.open("POST", "{% url 'adminapp:mailjobs_rest_get' %}", true);
             r.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+            r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             r.onreadystatechange = function () {
               if (r.readyState != 4 || r.status != 200) return;
-              this.data = JSON.parse(r.responseText);
+
+              var output = JSON.parse(r.responseText);
+              this.entries = output.entries;
+              this.total_count = output.total_count;
 
               callback && callback();
-
-              console.log(this.data)
             }.bind(this);
 
-            r.send("test=value");
+            var paramsList = [];
+            for (var key in params) {
+              paramsList.push(key + '=' + params[key]);
+            }
+            r.send(paramsList.join('&'));
+        }
+      },
+      watch: {
+        filter: function() {
+          this.page = 1;
+        },
+        page_size: function() {
+          this.page = 1;
         }
       }
     };
@@ -104,6 +171,7 @@
         columns: [
           {label: 'Destination', field: 'fields.destination'},
           {label: 'Status', callback: function(row) { return row.fields.sent ? 'YES' : 'NO'; }},
+          {label: 'Retries', field: 'fields.retry_count'},
           {label: 'Created', field: 'fields.created_at'},
         ],
         dataStore: dataStore
