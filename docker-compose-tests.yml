@@ -1,0 +1,14 @@
+version: '2'
+services:
+
+  selenium-chrome:
+    image: "selenium/standalone-chrome"
+
+  # Pytest
+  pytest:
+    build: ./loginapp
+    command: ./run_pytest.sh
+    volumes:
+      - ./loginapp:/app
+    depends_on:
+      - selenium-chrome

@@ -1,5 +1,7 @@
 django>=1.8,<1.9
+pytest-django
 celery
 psycopg2
 channels
 asgi_redis
+selenium

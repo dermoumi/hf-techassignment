@@ -1,0 +1,3 @@
+{
+  "mainapp/tests.py::LoginTests::test_empty_form": true
+}
