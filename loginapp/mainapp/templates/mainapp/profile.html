@@ -1,6 +1,10 @@
 {% extends "mainapp/partials/base.html" %}
 
+{% block body_class %}{{ block.super }} small-container{% endblock body_class %}
+
 {% block content %}
-  You are logged in as {{ request.user }}<br/>
-  <a href="{% url 'mainapp:accounts_logout' %}">Logout »</a>
+  <div class="container">
+    You are logged in as `{{ request.user }}`<br/>
+    <a href="{% url 'mainapp:logout' %}">Logout »</a>
+  </div>
 {% endblock content %}

@@ -108,6 +108,7 @@ STATIC_URL = '/static/'
 
 # Auth
 AUTH_USER_MODEL = 'mainapp.user'
+LOGIN_REDIRECT_URL = '/profile'
 
 # Channel
 CHANNEL_LAYERS = {
