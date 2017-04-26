@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'mainapp',
-    'django.contrib.admin',
+    'adminapp',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -117,7 +118,7 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': ['redis://redis:6379']
         },
-        'ROUTING': 'mainapp.routing.channel_routing',
+        'ROUTING': 'loginapp.routing.channel_routing',
     },
 }
 

@@ -1,0 +1,16 @@
+{% extends "adminapp/partials/base.html" %}
+
+{% block header %}
+  <header>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <h1><a href="{% url 'adminapp:dashboard' %}">Administration</h1>
+        </div>
+        <div class="col-sm-6 admin-links">
+          Logged in as {{ request.user }} | <a href="{% url 'adminapp:logout' %}">Logout »</a>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock header %}

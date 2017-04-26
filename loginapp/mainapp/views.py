@@ -47,8 +47,7 @@ def signup(request):
 def profile(request):
     # Check if the user is actually authenticated
     if not request.user.is_authenticated():
-        from django.contrib.auth.views import redirect_to_login
-        return redirect_to_login(
+        return auth_views.redirect_to_login(
             request.get_full_path(),
             reverse('mainapp:login', current_app='mainapp')
         )

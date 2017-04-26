@@ -9,7 +9,6 @@ body {
     font-family: OpenSans, Helvetica, sans-serif;
     color: #535362;
     line-height: 2;
-    margin: 1rem;
 }
 
 /* Styles originally removed from bootstrap and added as standalone in here */
@@ -59,6 +58,10 @@ body {
 .alert {
     margin-bottom: 10px;
     padding: 10px 15px;
+}
+
+.content .messages {
+    margin-top: 1rem;
 }
 
 .content .messages .alert:last-child {

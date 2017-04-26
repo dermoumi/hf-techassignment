@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+}
+
+header {
+    color: #FFF;
+    background: #333;
+}
+
+header h1 {
+    font-size: 1.1em;
+    margin: 0;
+    line-height: 2em;
+    font-weight: bold;
+}
+
+header a {
+    color: #DDD;
+}
+
+header a:hover {
+    color: #EEE;
+}
+
+header .admin-links {
+    text-align: right;
+    line-height: 2em;
+    font-size: 1.1em;
+}

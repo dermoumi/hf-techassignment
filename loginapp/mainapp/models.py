@@ -40,6 +40,7 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     objects = MyUserManager()
     USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.username
