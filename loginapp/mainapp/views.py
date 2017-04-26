@@ -7,7 +7,7 @@ from . import forms
 
 # Index view, right now all it does is redirect to user panel
 def index(request):
-    return redirect('mainapp:signup')
+    return signup(request)
 
 # Login view, logs the user in, contrib.auth handles it
 def login(request):
@@ -28,10 +28,6 @@ def signup(request):
         if form.is_valid():
             # Save user to the database
             form.save()
-
-            # Start email task
-            from . import tasks
-            tasks.send_email(form.cleaned_data.get('email'))
 
             # Redirect to login page
             messages.success(request, _('You have been successfully registered'))

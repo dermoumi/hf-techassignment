@@ -26,9 +26,11 @@ class SignupForm(forms.ModelForm):
         # Save hashed, salted password
         user = super(SignupForm, self).save(commit=False)
         user.set_password(self.cleaned_data.get('password'))
-        
-        # TODO: Add email confirmation
         user.is_active = True
+        
+        # Start email task
+        from . import tasks
+        tasks.send_email(form.cleaned_data.get('email'))
 
         if commit:
             user.save()
