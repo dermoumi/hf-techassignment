@@ -1,6 +1,6 @@
 version: '2'
 services:
-
+  # Selenium chrome
   selenium-chrome:
     image: "selenium/standalone-chrome"
 

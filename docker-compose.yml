@@ -1,6 +1,5 @@
 version: '2'
 services:
-
   # PostgreSQL database
   db:
     image: postgres
@@ -12,11 +11,12 @@ services:
   # Django web server
   web:
     build: ./loginapp
-    command: ./run_web.sh # python3 manage.py runserver 0.0.0.0:8000
+    command: ./run_web.sh
     volumes:
       - ./loginapp:/app
     ports:
       - "8000:8000"
+      - "8081:8081"
     depends_on:
       - db
       - redis
