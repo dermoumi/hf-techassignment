@@ -1,5 +1,7 @@
-# Python cache directories
+# Cache directories
 **/__pycache__/
+.cache
+
 
 # Automatically saved files
 *~
