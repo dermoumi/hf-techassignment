@@ -1,4 +1,5 @@
 {% extends "adminapp/partials/base.html" %}
+{% load static %}
 
 {% block header %}
   <header>
@@ -34,3 +35,29 @@
     </div>
   </div>
 {% endblock dash_container %}
+
+{% block extra_scripts %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+
+  <script type="text/javascript">
+    // Admin notifications socket
+    var mailJobsSocket = new WebSocket('ws://' + window.location.host + '/admin/');
+    mailJobsSocket.onmessage = function(e) {
+        // Received new message from the server
+        var message = JSON.parse(e.data);
+        console.log('incoming', message);
+
+        switch (message.action) {
+        case 'notification':
+          // TODO: Implement this
+          break;
+        case 'notification_read':
+          // TODO: Implement this
+          break;
+        default:
+          break; 
+        }
+      }
+    </script>
+{% endblock extra_scripts %}

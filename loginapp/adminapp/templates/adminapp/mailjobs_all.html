@@ -9,7 +9,7 @@
 {% endblock content %}
 
 {% block extra_scripts %}
-  <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+  {{ block.super }}
   <script type="text/javascript" src="{% static 'js/vuejs-datatable.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/mailjobs-all.js' %}"></script>
   <script type="text/javascript">

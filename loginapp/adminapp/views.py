@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from mainapp.models import EmailJob
 from django.core import serializers
 from django.core.paginator import Paginator
-from . import forms
+from . import forms, models
 
 def staff_only(user):
     return user.is_authenticated() and user.is_staff
@@ -72,6 +72,16 @@ def mailjobs_rest_get(request):
         page_jobs = serializers.serialize('json', paginator.page(page).object_list)
         json_output = '{"total_count": %i, "entries": %s}' % (mail_jobs.count(), page_jobs)
 
+    else:
+        json_output = ''
+
+    return HttpResponse(json_output, content_type="application/json")
+
+@user_passes_test(staff_only, login_url='adminapp:login')
+def notifications_rest_get(request):
+    if request.method = 'POST':
+        notifications = models.Notification.objects.filter(users__id=request.user.pk, usernotification__unread=True)
+        json_output = serializers.serialize('json', notifications)
     else:
         json_output = ''
 

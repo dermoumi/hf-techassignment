@@ -5,9 +5,8 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from smtplib import SMTPException
 from celery.exceptions import MaxRetriesExceededError
-from channels import Group
-from django.core import serializers
 from . import models
+from adminapp import notifications
 
 log = logging.getLogger(__name__)
 
@@ -19,36 +18,23 @@ class NotifyErrorSharedTask(Task):
         mail_job.status = 'failed'
         mail_job.save()
 
-        # Notify task changed state (failed)
-        Group('mailjobs').send({
-            'text': '{"action": "changed_status", "jobs": %s}' % serializers.serialize('json', [mail_job])
-        })
+        notifications.mail_job_changed_status(mail_job)
 
         super(NotifyErrorSharedTask, self).on_failure(exc, task_id, args, kwargs, einfo)
-
-    def update_state(self, task_id=None, state=None, meta=None):
-        super(NotifyErrorSharedTask, self).update_state(task_id, state, meta)
-        Group('mailjobs').send({
-            'text': '{"action": "changed_status", "jobs": %s}' % serializers.serialize('json', [mail_job])
-        })
-        
 
 def send_email(destination):
     log.debug('Mail job to %s', destination)
 
-    job = models.EmailJob(destination=destination)
-    job.save()
+    mail_job = models.EmailJob(destination=destination)
+    mail_job.save()
 
-    # Notify task created
-    Group('mailjobs').send({
-        'text': '{"action": "created", "jobs": %s}' % serializers.serialize('json', [job])
-    })
+    notifications.mail_job_created(mail_job)
 
     # Start task
-    task = send_email_task.delay(job.id)
+    task = send_email_task.delay(mail_job.id)
     
-    job.celery_id = task.id
-    job.save()
+    mail_job.celery_id = task.id
+    mail_job.save()
 
 @shared_task(bind=True, base=NotifyErrorSharedTask)
 def send_email_task(self, job_id):
@@ -60,10 +46,7 @@ def send_email_task(self, job_id):
     mail_job.status = 'started'
     mail_job.save()
 
-    # Notify task changed state (started)
-    Group('mailjobs').send({
-        'text': '{"action": "changed_status", "jobs": %s}' % serializers.serialize('json', [mail_job])
-    })
+    notifications.mail_job_changed_status(mail_job)
 
     try:
         # Attempt to send email
@@ -86,10 +69,7 @@ def send_email_task(self, job_id):
         mail_job.last_retry_at = timezone.now()
         mail_job.save()
 
-        # Notify task changed state (retrying)
-        Group('mailjobs').send({
-            'text': '{"action": "changed_status", "jobs": %s}' % serializers.serialize('json', [mail_job])
-        })
+        notifications.mail_job_changed_status(mail_job)
 
         self.retry(countdown=1) # TODO: Restore countdown to 60 * 5
 
@@ -98,7 +78,4 @@ def send_email_task(self, job_id):
         mail_job.status = 'success'
         mail_job.save()
 
-        # Notify task changed state (success)
-        Group('mailjobs').send({
-            'text': '{"action": "changed_status", "jobs": %s}' % serializers.serialize('json', [mail_job])
-        })
+        notifications.mail_job_changed_status(mail_job)
