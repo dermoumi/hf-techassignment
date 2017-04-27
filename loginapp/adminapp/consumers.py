@@ -65,6 +65,7 @@ def ws_receive_admin(message):
         return
     
     data = json.loads(message.content.get('text'))
+    print('DATA =', data)
 
     if data.get('action') == 'notification_read':
         # Mark notification as count
@@ -81,10 +82,7 @@ def ws_receive_admin(message):
     elif data.get('action') == 'notification_all_read':
         # Mark all notifications as read
         user_id = message.user.pk
-        user_notifications = models.UserNotification.objects.get(user_id=user_id, unread=True)
-        for user_notification in user_notifications:
-            user_notification.unread = False
-            user_notification.save()
+        user_notifications = models.UserNotification.objects.filter(user_id=user_id, unread=True).update(unread=False)
 
         Group('admin-%s' % user_id).send({
             'text': '{"action": "notification_all_read"}'

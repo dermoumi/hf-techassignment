@@ -138,7 +138,6 @@ window.mailjobs_active = window.mailjobs_active || function(initialEntries) {
     };
 
     // Mail jobs socket
-    // How to check if user is really a staff and can access this data??
     var mailJobsSocket = new WebSocket('ws://' + window.location.host + '/mailjobs/');
     mailJobsSocket.onmessage = function(e) {
         // Received new message from the server

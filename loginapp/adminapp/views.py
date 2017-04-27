@@ -79,9 +79,20 @@ def mailjobs_rest_get(request):
 
 @user_passes_test(staff_only, login_url='adminapp:login')
 def notifications_rest_get(request):
-    if request.method = 'POST':
-        notifications = models.Notification.objects.filter(users__id=request.user.pk, usernotification__unread=True)
-        json_output = serializers.serialize('json', notifications)
+    if request.method == 'POST':
+        load_fields = ('unread', 'notification',)
+        notifications = models.UserNotification.objects.filter(user_id=request.user.pk, unread=True)\
+            .order_by('-notification__time') # Can't order by notification time for some reason, by id plays nicely too
+        notifications_count = notifications.count()
+
+        # If number of unread notifications is less than six
+        if notifications_count < 6:
+            more_notifications = models.UserNotification.objects.filter(user_id=request.user.pk, unread=False)\
+                .order_by('-notification__time')
+            more_notifications = more_notifications[:6 - notifications_count]
+            notifications = list(notifications) + list(more_notifications)
+
+        json_output = serializers.serialize('json', notifications, fields=load_fields, use_natural_foreign_keys=True)
     else:
         json_output = ''
 

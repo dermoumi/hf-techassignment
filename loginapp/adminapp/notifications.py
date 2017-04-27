@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 from channels import Group
 from django.core import serializers
 from mainapp.models import User
+from django.core.urlresolvers import reverse
 
 def notify_admins(kind, link, content, admins = None):
     notification = models.Notification(kind=kind, link=link, content=content)
@@ -25,8 +26,8 @@ def mail_job_created(mail_job):
         'text': '{"action": "created", "jobs": %s}' % serializers.serialize('json', [mail_job])
     })
 
-    notify_admins(kind='mail_job_created', link='adminapp:mailjobs_all',
-        content=_('A new mail job to %s was created') % mail_job.destination)
+    notify_admins(kind='mail_job_created', link=reverse('adminapp:mailjobs_all'),
+        content=_('A new mail job to «%s» was created') % mail_job.destination)
 
 def mail_job_changed_status(mail_job):
     Group('mailjobs').send({
@@ -34,5 +35,5 @@ def mail_job_changed_status(mail_job):
     })
 
     # Probably don't need to notify status changes? or probably just some of them?
-    # notify_admins(kind='mail_job_changed_status', link='adminapp:mailjobs_all',
-    #     content=_('Mail job to %s changed status to %s') % (mail_job.destination, mail_job.status))
+    # notify_admins(kind='mail_job_changed_status', link=reverse('adminapp:mailjobs_all'),
+    #     content=_('Mail job to «%s» changed status to «%s»') % (mail_job.destination, mail_job.status))

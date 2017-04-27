@@ -14,7 +14,7 @@ header h1 {
     font-weight: bold;
 }
 
-header a {
+header a, header a:visited {
     color: #DDD;
 }
 
@@ -34,4 +34,75 @@ header .admin-links {
 
 .jobs-list table {
     width: 100%;
+}
+
+.page-title h1 {
+    display: inline-block;
+}
+
+#notifications {
+    position: relative;
+    display: inline-block;
+}
+
+#notifications .count {
+    background-color: #F44336;
+    display: inline-block;
+    padding: .2rem .5rem;
+    margin-left: 1rem;
+    width: 3.5rem;
+    text-align: center;
+    text-decoration: none;
+}
+
+#notifications .window {
+    list-style-type: none;
+    position: absolute;
+    width: 500px;
+    bottom: -1;
+    left: -50%;
+    display: none;
+    background-color: #FFF;
+    color: #333;
+    padding: 1rem 0;
+    border-radius: 3px;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+    z-index: 900;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#notifications .window-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.05);
+    z-index: 800;
+    display: none;
+}
+
+#notifications .window.open, #notifications .window-screen.open {
+    display: block;
+}
+
+#notifications .window a {
+    display: block;
+    padding: .4rem 2rem;
+    margin: .2rem 0;
+    text-decoration: none;
+    color: #888;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+}
+
+#notifications .window a:hover {
+    background-color: #FAFAFA;
+    border-top: 1px solid #F0F0F0;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+#notifications .window .unread a {
+    color: #000 !important;
 }

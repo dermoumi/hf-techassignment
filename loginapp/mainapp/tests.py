@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+# TODO: More documentation on pytest, needs more tests in here, also what kind of tests should be done?
 class LoginTests(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):

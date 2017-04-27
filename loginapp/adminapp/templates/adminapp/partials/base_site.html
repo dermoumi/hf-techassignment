@@ -2,11 +2,14 @@
 {% load static %}
 
 {% block header %}
-  <header>
+  <header id="header">
     <div class="container">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6 page-title">
           <h1><a href="{% url 'adminapp:dashboard' %}">Administration</a></h1>
+          <notifications
+            :notification-count="notificationCount">
+          </notifications>
         </div>
         <div class="col-sm-6 admin-links">
           Logged in as {{ request.user }} | <a href="{% url 'adminapp:logout' %}">Logout »</a>
@@ -40,24 +43,23 @@
   {{ block.super }}
   <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
 
-  <script type="text/javascript">
-    // Admin notifications socket
-    var mailJobsSocket = new WebSocket('ws://' + window.location.host + '/admin/');
-    mailJobsSocket.onmessage = function(e) {
-        // Received new message from the server
-        var message = JSON.parse(e.data);
-        console.log('incoming', message);
+  <script type="text/x-template" id="notifications-script">
+    {% verbatim %}
+    <div id="notifications">
+      <a href="#" class="count" @click="toggleWindow()">{{ notificationCount }}</a>
+      <div class="window-screen" :class="windowOpen ? 'open' : ''" @click="toggleWindow()"></div>
+      <ul class="window" :class="windowOpen ? 'open' : ''">
+        <li v-for="entry in entries" :class="[entry.fields.unread ? 'unread' : 'read', entry.fields.notification.kind]">
+          <a :href="entry.fields.notification.link">{{ entry.fields.notification.content }}</a>
+        </li>
+      </ul>
+    </div>
+    {% endverbatim %}
+  </script>
 
-        switch (message.action) {
-        case 'notification':
-          // TODO: Implement this
-          break;
-        case 'notification_read':
-          // TODO: Implement this
-          break;
-        default:
-          break; 
-        }
-      }
-    </script>
+  <script type="text/javascript" src="{% static 'js/admin-notifications.js' %}"></script>
+  <script type="text/javascript">
+    adminNotifications("{% url 'adminapp:notifications_rest_get' %}");
+  </script>
+
 {% endblock extra_scripts %}

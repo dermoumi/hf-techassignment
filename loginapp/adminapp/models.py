@@ -6,6 +6,14 @@ class Notification(models.Model):
     content = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True)
     users = models.ManyToManyField(User, through='UserNotification')
+    time = models.DateTimeField(auto_now_add=True)
+
+    def natural_key(self):
+        return {
+            'kind': self.kind,
+            'content': self.content,
+            'link': self.link
+        }
 
 class UserNotification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
