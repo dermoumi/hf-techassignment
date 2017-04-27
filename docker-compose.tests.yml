@@ -10,5 +10,8 @@ services:
     command: ./run_pytest.sh
     volumes:
       - ./loginapp:/app
+    expose:
+      - "8081"
     depends_on:
       - selenium-chrome
+      - worker
