@@ -98,6 +98,18 @@ window.mailjobs_active = window.mailjobs_active || function(initialEntries) {
         }
     };
 
+    // Task revoking button component
+    Vue.component('mailjobs-revoke-button', {
+        template: `<button :disabled="row.fields.status == 'success' || row.fields.status == 'failed'" 
+            @click="revokeTask">Revoke</button>'`,
+        props: ['row'],
+        methods: {
+            revokeTask: function() {
+                mailJobsSocket.send('{"action": "revoke_task", "job_pk":"' + this.row.pk + '"}');
+            }
+        }
+    });
+
     // VueJS model
     var vm = new Vue({
         el: '#mail-jobs',
@@ -112,10 +124,18 @@ window.mailjobs_active = window.mailjobs_active || function(initialEntries) {
                         d.getFullYear() + ' ' + ('0' + d.getHours()).slice(-2) + ':' +
                         ('0' + d.getMinutes()).slice(-2) + ':' + ('0' + d.getSeconds()).slice(-2);
                 }},
+                {label: 'Revoke', component: 'mailjobs-revoke-button'}
             ],
             dataStore: dataStore
         }
     });
+
+    // List of job status that don't need to be tracked
+    var discardStatus = {
+        'success': true,
+        'failed': true,
+        'revoked': true
+    };
 
     // Mail jobs socket
     // How to check if user is really a staff and can access this data??
@@ -145,7 +165,7 @@ window.mailjobs_active = window.mailjobs_active || function(initialEntries) {
                     row.fields.retry_count = job.fields.retry_count;
 
                     // If success or failed, remove task from data rows
-                    if (status == 'success' || status == 'failed') {
+                    if (discardStatus[status]) {
                         setTimeout(function() {
                             // We'd have to look for it all over again
                             // Since the dataRows might have been sorted
@@ -155,7 +175,7 @@ window.mailjobs_active = window.mailjobs_active || function(initialEntries) {
                                 dataRows.splice(k, 1);
                                 break;
                             }
-                        }, 3000);
+                        }, 1000);
                     }
 
                     rowUpdated = true;
