@@ -52,7 +52,11 @@ def mailjobs_all(request):
 
 @user_passes_test(staff_only, login_url='adminapp:login')
 def mailjobs_active(request):
-    return render(request, 'adminapp/mailjobs_active.html')
+    mail_jobs = EmailJob.objects.filter(status__in=['pending', 'started', 'retrying']).order_by('-created_at')
+
+    return render(request, 'adminapp/mailjobs_active.html', {
+        'initial_entries': serializers.serialize('json', mail_jobs)
+    })
 
 @user_passes_test(staff_only, login_url='adminapp:login')
 def mailjobs_rest_get(request):

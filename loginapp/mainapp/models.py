@@ -62,17 +62,8 @@ class User(AbstractBaseUser):
         return self.is_admin
 
 class EmailJob(models.Model):
-    JOB_STATE = (
-        ('pending', _('Pending')),
-        ('started', _('Started')),
-        ('retrying', _('Retrying')),
-        ('revoked', _('Revoked')),
-        ('success', _('Success')),
-        ('failed', _('Failed')),
-    )
-
     destination = models.CharField(max_length=100)
-    status = models.CharField(max_length=10, choices=JOB_STATE, default='pending')
+    status = models.CharField(max_length=10, default='pending')
     retry_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     last_retry_at = models.DateTimeField(null=True)

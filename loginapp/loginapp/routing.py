@@ -1,5 +1,6 @@
 from channels.routing import route
+from adminapp.consumers import ws_connect_mailjobs
 
 channel_routing = [
-    # route('websocket.receive', consumers.ws_message)
+    route('websocket.connect', ws_connect_mailjobs, path=r'^/mailjobs/$'),
 ]
