@@ -1,22 +1,9 @@
-import pytest, socket
-from selenium import webdriver
+import pytest
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-@pytest.fixture(scope="module")
-def selenium():
-    driver = webdriver.Remote(
-        command_executor='http://selenium-chrome:4444/wd/hub',
-        desired_capabilities=DesiredCapabilities.CHROME)
-    driver.implicitly_wait(2)
-    yield driver
-    driver.quit()
-
-@pytest.fixture(scope="module")
-def live_server_url():
-    return 'http://web:8000'
+from mainapp.tests.fixtures import selenium, live_server_url
 
 def is_element_present(selenium, how, what):
     try:
