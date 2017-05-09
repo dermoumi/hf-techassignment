@@ -23,7 +23,7 @@ A web app where a User can **Signup** and **Login**, and where an Admin can **mo
 8. Admin Dashboard should have a small real-time notification component where we display new entries notifications
 9. Notification component entries should be stored within the DB 
 
-## Deployement
+## Deployment
 
 Only `docker-compose` (consequently `docker`) is required to run the app: [Install Docker Compose](https://docs.docker.com/compose/install/)
 
