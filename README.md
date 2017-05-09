@@ -1,4 +1,4 @@
-# Python Technical Assignment 🙂
+# UR Python Bootcamp
 
 ## Tech Stack
 
