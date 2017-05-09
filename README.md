@@ -31,7 +31,9 @@ Only `docker-compose` (and by extension `docker`) is required to run the app: [I
 
     # docker-compose up
 
-The application should then be available at http://localhost:8000
+The application should then be available at `http://localhost:8000`
+
+An admin user should be created when accessing `http://localhost:8000/admin` the first time. username=`admin` and password=`admin`
 
 ### To run the tests:
 

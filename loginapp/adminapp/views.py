@@ -8,6 +8,7 @@ from mainapp.models import EmailJob
 from django.core import serializers
 from django.core.paginator import Paginator
 from . import forms, models
+from mainapp import models as main_models
 
 def staff_only(user):
     return user.is_authenticated() and user.is_staff
@@ -19,6 +20,12 @@ def dashboard(request):
 def login(request):
     if request.user.is_authenticated() and request.user.is_staff:
         return redirect('adminapp:dashboard')
+
+    # Create temporary admin for testing
+    if not main_models.User.objects.filter(is_admin=True).exists():
+        admin_user = main_models.User(username='admin', email='admin@localhost')
+        admin_user.set_password('admin')
+        admin_user.save()
 
     if request.method == 'POST':
         form = forms.AdminLoginForm(request.POST)

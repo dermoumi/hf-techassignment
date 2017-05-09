@@ -17,7 +17,7 @@ class AdminLoginForm(forms.Form):
         if user is None or not user.is_active:
             self.add_error(forms.forms.NON_FIELD_ERRORS, _('Username or password are incorrect'))
 
-        if not user.is_staff:
+        if user is not None and not user.is_staff:
             self.add_error(forms.forms.NON_FIELD_ERRORS, _('Only staff can log in to the administration panel'))
 
         self.__authenticated_user = user
