@@ -27,7 +27,7 @@ A web app where a User can **Signup** and **Login**, and where an Admin can **mo
 
 Only `docker-compose` (consequently `docker`) is required to run the app: [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-###To run the application:
+### To run the application:
 
     # docker-compose up
 
